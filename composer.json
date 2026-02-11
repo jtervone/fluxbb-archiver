@@ -1,0 +1,19 @@
+{
+    "name": "jtervone/fluxbb-archiver",
+    "description": "Export a FluxBB forum to static HTML and JSON files",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "ext-mysqli": "*",
+        "ext-mbstring": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "FluxbbArchiver\\": "src/FluxbbArchiver/"
+        }
+    },
+    "bin": [
+        "bin/fluxbb-archiver"
+    ]
+}

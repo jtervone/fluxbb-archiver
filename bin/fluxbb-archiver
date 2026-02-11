@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// Find autoloader
+$autoloadPaths = [
+    __DIR__ . '/../vendor/autoload.php',         // installed as project
+    __DIR__ . '/../../../autoload.php',           // installed as dependency
+];
+
+$autoloaded = false;
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require $path;
+        $autoloaded = true;
+        break;
+    }
+}
+
+if (!$autoloaded) {
+    fwrite(STDERR, "Error: Could not find Composer autoloader.\n");
+    fwrite(STDERR, "Run 'composer install' in the project root first.\n");
+    exit(1);
+}
+
+use FluxbbArchiver\Application;
+use FluxbbArchiver\Config;
+
+// Show help if no args or --help
+if ($argc < 2 || in_array('--help', $argv, true) || in_array('-h', $argv, true)) {
+    echo Config::usageText() . "\n";
+    exit(0);
+}
+
+try {
+    $config = Config::fromArgv($argv);
+} catch (\InvalidArgumentException $e) {
+    fwrite(STDERR, "Error: " . $e->getMessage() . "\n");
+    exit(1);
+}
+
+$app = new Application($config);
+$exitCode = $app->run();
+exit($exitCode);
