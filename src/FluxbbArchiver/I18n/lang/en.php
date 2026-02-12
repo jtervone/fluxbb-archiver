@@ -83,4 +83,13 @@ return [
     'quick_links' => 'Quick Links',
     'members_list' => 'Members List',
     'members_desc' => 'List of all %d registered forum members.',
+
+    // Date/time formats
+    'date_format' => 'Y-m-d',
+    'datetime_format' => 'Y-m-d H:i:s',
+    'generated_at_format' => 'Y-m-d H:i:s T',
+
+    // Misc
+    'by' => 'by',
+    'generated_on' => 'Static archive generated on %s',
 ];

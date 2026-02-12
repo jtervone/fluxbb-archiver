@@ -1,0 +1,16 @@
+{
+    "forum": {
+        "id": 5,
+        "name": "Private Forum 1.1",
+        "description": "Private Forum 1.1 description",
+        "num_topics": 0,
+        "num_posts": 0,
+        "last_post": 0,
+        "last_poster": null,
+        "position": 1,
+        "is_private": true
+    },
+    "page": 1,
+    "total_pages": 1,
+    "topics": []
+}

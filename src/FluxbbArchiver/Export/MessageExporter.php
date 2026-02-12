@@ -116,7 +116,7 @@ class MessageExporter
 
                 $avatarHtml = $this->buildAvatarHtml($publicDir, $msg['poster_id'], $msg['poster_name'], $posterData);
                 $usernameHtml = $posterData
-                    ? '<a href="../../public/users/user_' . $msg['poster_id'] . '.html">' . BbcodeParser::h($msg['poster_name']) . '</a>'
+                    ? $this->users->getUserLink($msg['poster_name'], '../../public/')
                     : BbcodeParser::h($msg['poster_name']);
 
                 $userDetails = null;
@@ -127,14 +127,14 @@ class MessageExporter
                     if ($posterData['location']) {
                         $userDetails[$t->get('location')] = BbcodeParser::h($posterData['location']);
                     }
-                    $userDetails[$t->get('registered')] = date('Y-m-d', $posterData['registered']);
+                    $userDetails[$t->get('registered')] = date($t->get('date_format'), $posterData['registered']);
                     $userDetails[$t->get('num_posts')] = number_format($posterData['num_posts']);
                 }
 
                 $postDataList[] = [
                     'postId' => $msg['id'],
                     'postNum' => $msgNum,
-                    'postDate' => UserExporter::formatTime($msg['posted']),
+                    'postDate' => UserExporter::formatTime($msg['posted'], $t->get('datetime_format')),
                     'idPrefix' => 'm',
                     'body' => $this->bbcode->toHtml($msg['message']),
                     'signature' => null,
@@ -146,8 +146,8 @@ class MessageExporter
                 ];
             }
 
-            $starterLink = '<a href="../../public/users/user_' . $pm['starter_id'] . '.html">' . BbcodeParser::h($pm['starter_name']) . '</a>';
-            $recipientLink = '<a href="../../public/users/user_' . $pm['to_id'] . '.html">' . BbcodeParser::h($pm['recipient_name']) . '</a>';
+            $starterLink = $this->users->getUserLink($pm['starter_name'], '../../public/');
+            $recipientLink = $this->users->getUserLink($pm['recipient_name'], '../../public/');
 
             $content = $this->engine->render('pm_conversation', [
                 'participantsLabel' => $t->get('participants'),
@@ -167,7 +167,7 @@ class MessageExporter
                     'noindex' => true,
                 ],
                 'translator' => $t,
-                'generatedAt' => date('Y-m-d H:i:s T'),
+                'generatedAt' => date($t->get('generated_at_format')),
             ]);
 
             $this->writeWithJson(
@@ -186,9 +186,9 @@ class MessageExporter
             $conversationItems[] = [
                 'url' => 'messages/pm_' . $pm['id'] . '.html',
                 'subject' => BbcodeParser::h($pm['subject']),
-                'starterLink' => '<a href="../public/users/user_' . $pm['starter_id'] . '.html">' . BbcodeParser::h($pm['starter_name']) . '</a>',
-                'recipientLink' => '<a href="../public/users/user_' . $pm['recipient_id'] . '.html">' . BbcodeParser::h($pm['recipient_name']) . '</a>',
-                'preview' => sprintf($t->get('x_messages_last'), $pm['num_replies'] + 1, UserExporter::formatTime($pm['last_post'])),
+                'starterLink' => $this->users->getUserLink($pm['starter_name'], '../public/'),
+                'recipientLink' => $this->users->getUserLink($pm['recipient_name'], '../public/'),
+                'preview' => sprintf($t->get('x_messages_last'), $pm['num_replies'] + 1, UserExporter::formatTime($pm['last_post'], $t->get('datetime_format'))),
             ];
         }
 
@@ -216,7 +216,7 @@ class MessageExporter
                 'noindex' => true,
             ],
             'translator' => $t,
-            'generatedAt' => date('Y-m-d H:i:s T'),
+            'generatedAt' => date($t->get('generated_at_format')),
         ]);
 
         @file_put_contents($privateDir . 'index.html', $html);
@@ -256,7 +256,7 @@ class MessageExporter
                 'noindex' => true,
             ],
             'translator' => $t,
-            'generatedAt' => date('Y-m-d H:i:s T'),
+            'generatedAt' => date($t->get('generated_at_format')),
         ]);
 
         @file_put_contents($privateDir . 'index.html', $html);

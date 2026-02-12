@@ -120,7 +120,7 @@ class Application
         // Export users
         $out->blank();
         $out->info('Exporting users (public profiles)...');
-        $userExporter = new UserExporter($db, $config, $translator, $bbcode, $engine, $boardTitle);
+        $userExporter = new UserExporter($db, $config, $translator, $bbcode, $engine, $slugGenerator, $boardTitle);
         $userCount = $userExporter->exportPublic();
         $out->info("Exported {$userCount} users.");
 

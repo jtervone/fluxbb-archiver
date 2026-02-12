@@ -255,8 +255,9 @@ class ForumExporter
                         'authorLink' => $this->users->getUserLink($topic['poster'], '../'),
                         'replies' => number_format((int)$topic['num_replies']),
                         'views' => number_format((int)$topic['num_views']),
-                        'lastPostDate' => UserExporter::formatTime((int)$topic['last_post']),
+                        'lastPostDate' => UserExporter::formatTime((int)$topic['last_post'], $t->get('datetime_format')),
                         'lastPosterLink' => $this->users->getUserLink($topic['last_poster'], '../'),
+                        'byLabel' => $t->get('by'),
                     ];
                 }
 
@@ -279,7 +280,7 @@ class ForumExporter
                     'breadcrumbs' => [$forum['name'] => null],
                     'seo' => ['description' => $forumDesc, 'type' => 'website', 'noindex' => $isPrivate],
                     'translator' => $t,
-                    'generatedAt' => date('Y-m-d H:i:s T'),
+                    'generatedAt' => date($t->get('generated_at_format')),
                 ]);
 
                 $forumJson = [
@@ -391,7 +392,7 @@ class ForumExporter
                 'breadcrumbs' => $breadcrumbs,
                 'seo' => ['description' => $topicDesc, 'type' => 'article', 'noindex' => $isPrivate],
                 'translator' => $t,
-                'generatedAt' => date('Y-m-d H:i:s T'),
+                'generatedAt' => date($t->get('generated_at_format')),
             ]);
 
             $topicJson = [
@@ -463,7 +464,8 @@ class ForumExporter
 
         // Username
         if ($posterData) {
-            $usernameHtml = '<a href="' . $userBasePath . 'users/user_' . $post['poster_id'] . '.html">' . BbcodeParser::h($post['poster'] ?? $post['poster_name'] ?? '') . '</a>';
+            $posterName = $post['poster'] ?? $post['poster_name'] ?? '';
+            $usernameHtml = $this->users->getUserLink($posterName, $userBasePath);
         } else {
             $usernameHtml = BbcodeParser::h($post['poster'] ?? $post['poster_name'] ?? '');
         }
@@ -481,7 +483,7 @@ class ForumExporter
             if ($posterData['location']) {
                 $userDetails[$t->get('location')] = BbcodeParser::h($posterData['location']);
             }
-            $userDetails[$t->get('registered')] = date('Y-m-d', $posterData['registered']);
+            $userDetails[$t->get('registered')] = date($t->get('date_format'), $posterData['registered']);
             $userDetails[$t->get('num_posts')] = number_format($posterData['num_posts']);
         }
 
@@ -494,13 +496,13 @@ class ForumExporter
         // Edited notice
         $editedNotice = null;
         if (isset($post['edited']) && $post['edited']) {
-            $editedNotice = sprintf($t->get('last_edited_by'), BbcodeParser::h($post['edited_by']), UserExporter::formatTime((int)$post['edited']));
+            $editedNotice = sprintf($t->get('last_edited_by'), BbcodeParser::h($post['edited_by']), UserExporter::formatTime((int)$post['edited'], $t->get('datetime_format')));
         }
 
         return [
             'postId' => (int)$post['id'],
             'postNum' => $postNum,
-            'postDate' => UserExporter::formatTime((int)$post['posted']),
+            'postDate' => UserExporter::formatTime((int)$post['posted'], $t->get('datetime_format')),
             'idPrefix' => $idPrefix,
             'body' => $this->bbcode->toHtml($post['message'] ?? null),
             'signature' => $signature,
@@ -561,7 +563,7 @@ class ForumExporter
             'breadcrumbs' => [],
             'seo' => ['description' => $mainDesc, 'type' => 'website'],
             'translator' => $t,
-            'generatedAt' => date('Y-m-d H:i:s T'),
+            'generatedAt' => date($t->get('generated_at_format')),
         ]);
 
         @file_put_contents($publicDir . 'index.html', $html);
@@ -640,7 +642,7 @@ class ForumExporter
                 'noindex' => true,
             ],
             'translator' => $t,
-            'generatedAt' => date('Y-m-d H:i:s T'),
+            'generatedAt' => date($t->get('generated_at_format')),
         ]);
 
         @file_put_contents($privateDir . 'forums.html', $html);

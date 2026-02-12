@@ -1,0 +1,24 @@
+{
+    "topic": {
+        "id": 56,
+        "subject": "Forum Rules & Important Information (Read First)",
+        "slug": "forum-rules-and-important-information-read-first",
+        "poster": "fluxbb-archiver",
+        "posted": 1770921368,
+        "forum_id": 2,
+        "forum_name": "Public Forum 1.2"
+    },
+    "page": 1,
+    "total_pages": 1,
+    "posts": [
+        {
+            "id": 107,
+            "poster": "fluxbb-archiver",
+            "poster_id": 2,
+            "message": "Welcome to the forum!\n\nPlease take a moment to read these important guidelines before posting:\n\n• Be respectful and courteous to other members• Post in the correct category• No spam, advertising, or illegal content• Keep discussions relevant and constructive• Follow moderator instructions\n\nFailure to follow the rules may result in post removal or account action.\n\nIf you have questions, contact the moderation team.Thanks for helping keep the community friendly and organized!",
+            "posted": 1770921368,
+            "edited": null,
+            "edited_by": null
+        }
+    ]
+}

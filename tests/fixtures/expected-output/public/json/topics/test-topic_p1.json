@@ -1,0 +1,42 @@
+{
+    "topic": {
+        "id": 1,
+        "subject": "Test topic",
+        "slug": "test-topic",
+        "poster": "fluxbb-archiver",
+        "posted": 1770911360,
+        "forum_id": 1,
+        "forum_name": "Announcements"
+    },
+    "page": 1,
+    "total_pages": 1,
+    "posts": [
+        {
+            "id": 1,
+            "poster": "fluxbb-archiver",
+            "poster_id": 2,
+            "message": "If you are looking at this (which I guess you are), the install of FluxBB appears to have worked! Now log in and head over to the administration control panel to configure your forum.",
+            "posted": 1770911360,
+            "edited": null,
+            "edited_by": null
+        },
+        {
+            "id": 2,
+            "poster": "fluxbb-member",
+            "poster_id": 3,
+            "message": "Great — looks like everything installed successfully! I’ll log in now and head to the admin control panel to finish setting up the forum. Thanks!",
+            "posted": 1770920384,
+            "edited": null,
+            "edited_by": null
+        },
+        {
+            "id": 3,
+            "poster": "fluxbb-member",
+            "poster_id": 3,
+            "message": "Looks like the install worked, but I don’t seem to have access to the administration control panel. Could you check if my account has admin permissions or let me know how to access it?",
+            "posted": 1770920450,
+            "edited": null,
+            "edited_by": null
+        }
+    ]
+}

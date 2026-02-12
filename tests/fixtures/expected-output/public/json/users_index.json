@@ -1,0 +1,30 @@
+[
+    {
+        "id": 2,
+        "username": "fluxbb-archiver",
+        "title": "Master Archiver",
+        "realname": "FluxBB Archiver",
+        "url": "https:\/\/github.com\/jtervone\/fluxbb-archiver",
+        "location": "Github",
+        "signature": "I'm FluxBB Archiver - [url]https:\/\/github.com\/jtervone\/fluxbb-archiver[\/url] - :)",
+        "num_posts": 2,
+        "registered": 1770911360,
+        "last_visit": 1770912700,
+        "group_title": "Administrators",
+        "slug": "fluxbb-archiver"
+    },
+    {
+        "id": 3,
+        "username": "fluxbb-member",
+        "title": null,
+        "realname": "FluxBB Member",
+        "url": "https:\/\/github.com\/jtervone\/fluxbb-archiver",
+        "location": "Github",
+        "signature": "-- \nFluxBB Member",
+        "num_posts": 6,
+        "registered": 1770920249,
+        "last_visit": 1770921229,
+        "group_title": "Members",
+        "slug": "fluxbb-member"
+    }
+]

@@ -1,0 +1,30 @@
+{
+    "forum": {
+        "id": 1,
+        "name": "Announcements",
+        "description": "News from the community",
+        "num_topics": 1,
+        "num_posts": 3,
+        "last_post": 1770920450,
+        "last_poster": "fluxbb-member",
+        "position": 1,
+        "is_private": false
+    },
+    "page": 1,
+    "total_pages": 1,
+    "topics": [
+        {
+            "id": 1,
+            "subject": "Test topic",
+            "slug": "test-topic",
+            "poster": "fluxbb-archiver",
+            "posted": 1770911360,
+            "num_replies": 2,
+            "num_views": 3,
+            "last_post": 1770920450,
+            "last_poster": "fluxbb-member",
+            "closed": false,
+            "sticky": false
+        }
+    ]
+}

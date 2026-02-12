@@ -1,0 +1,24 @@
+{
+    "topic": {
+        "id": 2,
+        "subject": "Welcome — Test Post for Our New Bulletin Board",
+        "slug": "welcome-test-post-for-our-new-bulletin-board",
+        "poster": "fluxbb-member",
+        "posted": 1770920549,
+        "forum_id": 4,
+        "forum_name": "Public Forum 1.1"
+    },
+    "page": 1,
+    "total_pages": 1,
+    "posts": [
+        {
+            "id": 4,
+            "poster": "fluxbb-member",
+            "poster_id": 3,
+            "message": "Hello everyone! This is a test post to make sure our new bulletin board system is working correctly.\n\nIf you can see this, feel free to reply and say hello, test formatting, or try out any features like attachments, emojis, or quotes.\n\nThanks for helping test the forum!",
+            "posted": 1770920549,
+            "edited": null,
+            "edited_by": null
+        }
+    ]
+}

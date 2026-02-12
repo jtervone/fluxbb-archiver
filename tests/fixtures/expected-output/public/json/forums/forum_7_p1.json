@@ -1,0 +1,30 @@
+{
+    "forum": {
+        "id": 7,
+        "name": "Private Empty Forum",
+        "description": "Private Empty Forum description",
+        "num_topics": 1,
+        "num_posts": 1,
+        "last_post": 1770920810,
+        "last_poster": "fluxbb-member",
+        "position": 2,
+        "is_private": false
+    },
+    "page": 1,
+    "total_pages": 1,
+    "topics": [
+        {
+            "id": 5,
+            "subject": "Private Section Test — Member Check-In",
+            "slug": "private-section-test-member-check-in",
+            "poster": "fluxbb-member",
+            "posted": 1770920810,
+            "num_replies": 0,
+            "num_views": 1,
+            "last_post": 1770920810,
+            "last_poster": "fluxbb-member",
+            "closed": false,
+            "sticky": false
+        }
+    ]
+}
