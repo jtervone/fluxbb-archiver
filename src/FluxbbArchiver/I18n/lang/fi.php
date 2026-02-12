@@ -83,4 +83,13 @@ return [
     'quick_links' => 'Pikalinkit',
     'members_list' => 'Jäsenlista',
     'members_desc' => 'Lista kaikista %d rekisteröityneestä foorumin jäsenestä.',
+
+    // Date/time formats
+    'date_format' => 'j.n.Y',
+    'datetime_format' => 'j.n.Y H:i:s',
+    'generated_at_format' => 'j.n.Y H:i:s T',
+
+    // Misc
+    'by' => 'kirjoittanut',
+    'generated_on' => 'Staattinen arkisto luotu %s',
 ];

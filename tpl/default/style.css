@@ -98,6 +98,14 @@ footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; text-a
 /* Warning banner */
 .warning { background: #fee; padding: 15px; border: 1px solid #c00; border-radius: 4px; margin-bottom: 20px; }
 
+/* Footer links */
+footer a { color: #2c3e50; text-decoration: none; }
+footer a:hover { color: #3498db; }
+
+/* Forum stats links */
+.forum-stats a { color: #2c3e50; text-decoration: none; }
+.forum-stats a:hover { color: #3498db; }
+
 /* Responsive */
 @media (max-width: 768px) {
     .user-profile { grid-template-columns: 1fr; }

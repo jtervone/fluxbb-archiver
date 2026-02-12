@@ -45,8 +45,9 @@ class SitemapExporter
 
         // User profiles
         foreach ($usersData as $user) {
+            $userSlug = $user['slug'] ?? 'user-' . $user['id'];
             $urls[] = [
-                'loc' => $baseUrl . 'users/user_' . $user['id'] . '.html',
+                'loc' => $baseUrl . 'users/' . $userSlug . '.html',
                 'priority' => '0.4',
                 'changefreq' => 'monthly',
             ];

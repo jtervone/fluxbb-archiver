@@ -87,7 +87,7 @@ $breadcrumbJson = json_encode($breadcrumbLd, JSON_UNESCAPED_SLASHES | JSON_UNESC
       <?= $content ?>
     </main>
     <footer>
-      <p>Static archive generated on <?= $generatedAt ?></p>
+      <p><?= sprintf($translator->get('generated_on'), $generatedAt) ?></p>
       <p>Created with <a href="https://github.com/jtervone/fluxbb-archiver">FluxBB Archiver</a></p>
     </footer>
   </div>

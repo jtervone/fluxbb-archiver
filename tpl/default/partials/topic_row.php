@@ -12,6 +12,7 @@
  * @var string $views        Formatted view count
  * @var string $lastPostDate Formatted last post date
  * @var string $lastPosterLink Last poster user link HTML
+ * @var string $byLabel        Translated "by" label
  * @var \FluxbbArchiver\Html\TemplateEngine $this
  */
 ?>
@@ -20,5 +21,5 @@
   <td><?= $authorLink ?></td>
   <td><?= $replies ?></td>
   <td><?= $views ?></td>
-  <td><?= $lastPostDate ?><br><small>by <?= $lastPosterLink ?></small></td>
+  <td><?= $lastPostDate ?><br><small><?= $byLabel ?> <?= $lastPosterLink ?></small></td>
 </tr>
