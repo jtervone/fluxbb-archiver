@@ -16,6 +16,13 @@ The format is based on Keep a Changelog. This project adheres to Semantic Versio
 - **PCOV extension** in Docker for fast code coverage generation
 - **Composer** installed in Docker container for dependency management
 - **Auto-cloning FluxBB** from GitHub on first container start via entrypoint script
+- **Documentation** split into focused files in `docs/` directory:
+  - `docs/installation.md` — Requirements, standard and Docker setup
+  - `docs/usage.md` — CLI options, examples, output structure
+  - `docs/security.md` — Privacy, email obfuscation, safe workflows
+  - `docs/templates.md` — Custom themes, translation overrides
+  - `docs/testing.md` — PHPUnit tests, coverage, fixtures
+  - `docs/architecture.md` — Project structure, export pipeline
 - Standalone Docker development environment (PHP 7.4 FPM, nginx, MariaDB)
 - nginx configuration serving live FluxBB at `/input/`, exported files at `/archive/` and `/archive-private/`
 - `input/` directory for source FluxBB files (auto-populated from GitHub)
@@ -31,8 +38,9 @@ The format is based on Keep a Changelog. This project adheres to Semantic Versio
 
 ### Changed
 
+- **AssetCollector URL patterns** now built dynamically from `--original-url-base` and `--local-fetch-base` parameters instead of hardcoded values
+- **README.md** simplified to marketing overview with links to detailed documentation
 - Docker PHP container changed from CLI to FPM for web serving
-- README.md updated with Docker setup, testing instructions, and coverage table
 - CLAUDE.md updated with testing documentation and coverage breakdown
 - phpunit.xml configuration with Unit and Integration test suites
 

@@ -20,7 +20,7 @@ Export a FluxBB 1.5 forum database to static HTML and JSON files.
 
 ```bash
 # Clone and install
-git clone <repository-url>
+git clone https://github.com/jtervone/fluxbb-archiver.git
 cd fluxbb-archiver
 composer install
 
