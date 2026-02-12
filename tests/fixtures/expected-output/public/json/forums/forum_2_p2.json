@@ -1,0 +1,43 @@
+{
+    "forum": {
+        "id": 2,
+        "name": "Public Forum 1.2",
+        "description": "Public Forum 1.1 description",
+        "num_topics": 52,
+        "num_posts": 101,
+        "last_post": 1770926000,
+        "last_poster": "fluxbb-member",
+        "position": 2,
+        "is_private": false
+    },
+    "page": 2,
+    "total_pages": 2,
+    "topics": [
+        {
+            "id": 7,
+            "subject": "Test Topic 2 - Forum navigation testing",
+            "slug": "test-topic-2-forum-navigation-testing",
+            "poster": "fluxbb-member",
+            "posted": 1770923120,
+            "num_replies": 0,
+            "num_views": 0,
+            "last_post": 1770923120,
+            "last_poster": "fluxbb-member",
+            "closed": false,
+            "sticky": false
+        },
+        {
+            "id": 6,
+            "subject": "Test Topic 1 - Forum navigation testing",
+            "slug": "test-topic-1-forum-navigation-testing",
+            "poster": "fluxbb-member",
+            "posted": 1770923060,
+            "num_replies": 0,
+            "num_views": 0,
+            "last_post": 1770923060,
+            "last_poster": "fluxbb-member",
+            "closed": false,
+            "sticky": false
+        }
+    ]
+}

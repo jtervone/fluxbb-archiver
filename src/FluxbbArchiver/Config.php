@@ -108,6 +108,7 @@ class Config
         if (isset($options['force-public-categories']) && is_string($options['force-public-categories'])) {
             $forcePublic = array_map('trim', explode(',', $options['force-public-categories']));
             $forcePublic = array_filter($forcePublic, fn(string $v): bool => $v !== '');
+            $forcePublic = array_values($forcePublic); // Re-index after filtering
         }
 
         return new self(
@@ -147,8 +148,8 @@ Optional:
   --lang=fi             Language: fi or en (default: fi)
   --base-url=URL        Base URL for sitemap (default: https://example.com/)
   --source-dir=PATH     FluxBB root directory for copying local assets (avatars, smilies)
-  --local-fetch-base=URL  Local URL base for fetching images (e.g. http://localhost:8080/splatboard/)
-  --original-url-base=URL Original URL base to rewrite (e.g. http://splatweb.net/splatboard/)
+  --local-fetch-base=URL  Local URL base for fetching images (e.g. http://localhost:8080/forum/)
+  --original-url-base=URL Original URL base to rewrite (e.g. http://forum.example.com/)
   --no-obfuscate-emails  Disable email obfuscation in posts and signatures (enabled by default)
   --template=default    Template/theme name (default: default). Looks for tpl/<name>/
   --force-public-categories="Cat1,Cat2"

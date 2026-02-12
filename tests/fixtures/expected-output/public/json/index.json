@@ -1,0 +1,107 @@
+{
+    "board_title": "My FluxBB Forum",
+    "export_date": "2026-02-12T19:38:43+00:00",
+    "statistics": {
+        "total_users": 2,
+        "total_topics": 55,
+        "total_posts": 106,
+        "total_forums": 7,
+        "total_categories": 4
+    },
+    "categories": [
+        {
+            "id": 3,
+            "name": "Public Category 2",
+            "position": 0,
+            "forums": [
+                {
+                    "id": 3,
+                    "name": "Public Forum 2.1",
+                    "description": "Public Forum 2.1",
+                    "num_topics": 0,
+                    "num_posts": 0,
+                    "last_post": 0,
+                    "last_poster": null,
+                    "position": 0,
+                    "is_private": false
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Public Category 1",
+            "position": 0,
+            "forums": [
+                {
+                    "id": 4,
+                    "name": "Public Forum 1.1",
+                    "description": "Public Forum 1.1 description",
+                    "num_topics": 1,
+                    "num_posts": 1,
+                    "last_post": 1770920549,
+                    "last_poster": "fluxbb-member",
+                    "position": 1,
+                    "is_private": false
+                },
+                {
+                    "id": 2,
+                    "name": "Public Forum 1.2",
+                    "description": "Public Forum 1.1 description",
+                    "num_topics": 52,
+                    "num_posts": 101,
+                    "last_post": 1770926000,
+                    "last_poster": "fluxbb-member",
+                    "position": 2,
+                    "is_private": false
+                },
+                {
+                    "id": 6,
+                    "name": "Public Empty Forum",
+                    "description": "Public Empty Forum description",
+                    "num_topics": 0,
+                    "num_posts": 0,
+                    "last_post": 0,
+                    "last_poster": null,
+                    "position": 3,
+                    "is_private": false
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Private Category 1",
+            "position": 0,
+            "forums": [
+                {
+                    "id": 7,
+                    "name": "Private Empty Forum",
+                    "description": "Private Empty Forum description",
+                    "num_topics": 1,
+                    "num_posts": 1,
+                    "last_post": 1770920810,
+                    "last_poster": "fluxbb-member",
+                    "position": 2,
+                    "is_private": false
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "name": "General",
+            "position": 1,
+            "forums": [
+                {
+                    "id": 1,
+                    "name": "Announcements",
+                    "description": "News from the community",
+                    "num_topics": 1,
+                    "num_posts": 3,
+                    "last_post": 1770920450,
+                    "last_poster": "fluxbb-member",
+                    "position": 1,
+                    "is_private": false
+                }
+            ]
+        }
+    ]
+}

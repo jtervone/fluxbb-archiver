@@ -6,7 +6,7 @@ Generates a browsable static archive with SEO metadata (Open Graph, Twitter Card
 
 ## Requirements
 
-- PHP 7.4 or newer
+- PHP 7.4 (FluxBB 1.5 does not support PHP 8.x)
 - `ext-mysqli`
 - `ext-mbstring`
 - Composer
@@ -150,27 +150,88 @@ The `public/` directory never contains:
 - Private forum content
 - Private messages
 
-## Running inside Docker
+## Running with Docker (Recommended)
 
-If your FluxBB database is inside a Docker container, you can copy the tool into the container's mounted volume or run it directly:
+The project includes a complete Docker development environment with PHP 7.4 (FPM), nginx, and MariaDB. FluxBB is automatically cloned from GitHub on first container start.
+
+> **Note:** PHP 7.4 is used because FluxBB 1.5 does not support newer PHP versions. Most FluxBB installations run on PHP 7.4 or older.
+
+### Quick Start
 
 ```bash
-# Copy into a mounted volume
-cp -r fluxbb-archiver/ /path/to/docker-mount/fluxbb-archiver/
+# 1. Copy environment file
+cp .env.example .env
 
-# Run inside the container
-docker compose exec php php /var/www/html/fluxbb-archiver/bin/fluxbb-archiver \
+# 2. Start the environment (FluxBB is auto-cloned)
+docker compose up -d
+
+# 3. Install FluxBB via browser
+# Visit http://localhost:8080/input/ and complete the installer
+# Database settings: host=mariadb, user=fluxbb, password=fluxbb, database=fluxbb
+
+# 4. Create some test content in FluxBB, then run the archiver
+docker compose exec php php bin/fluxbb-archiver \
   --host=mariadb \
-  --user=wordpress \
-  --password=wordpress \
-  --database=wordpress \
+  --user=fluxbb \
+  --password=fluxbb \
+  --database=fluxbb \
   --prefix=fluxbb_ \
-  --output=/tmp/forum-export \
-  --lang=fi \
-  --source-dir=/var/www/html/splatboard/
+  --output=/var/www/html/output \
+  --lang=en \
+  --source-dir=/var/www/html/input/
+```
 
-# Copy results out
-docker cp $(docker compose ps -q php):/tmp/forum-export ./forum-export
+### Using Your Own FluxBB Data
+
+To archive an existing FluxBB forum:
+
+```bash
+# 1. Copy your FluxBB files to the input directory
+rm -rf input/*
+cp -r /path/to/your/fluxbb/* input/
+
+# 2. Import your database dump
+docker compose exec mariadb mysql -u fluxbb -pfluxbb fluxbb < /path/to/dump.sql
+
+# 3. Update input/config.php with Docker DB credentials:
+#    $db_host = 'mariadb';
+#    $db_name = 'fluxbb';
+#    $db_username = 'fluxbb';
+#    $db_password = 'fluxbb';
+```
+
+### View exported files
+
+After running the archiver, view the results in your browser:
+
+| URL | Description |
+|-----|-------------|
+| http://localhost:8080/input/ | Live FluxBB forum |
+| http://localhost:8080/archive/ | Exported public archive |
+| http://localhost:8080/archive-private/ | Exported private archive |
+
+### Stop the environment
+
+```bash
+docker compose down
+
+# To also remove the database volume (for fresh start):
+docker compose down -v
+```
+
+### Directory structure
+
+```plain
+input/                    # Not tracked in git (auto-populated with FluxBB)
+├── config.php            # FluxBB configuration
+├── img/
+│   ├── avatars/
+│   └── smilies/
+└── ...
+
+output/                   # Not tracked in git
+├── public/               # Safe to publish
+└── private/              # Sensitive data
 ```
 
 ## Custom templates
@@ -239,7 +300,21 @@ Template translations are merged on top of the default translations from `src/Fl
 
 ```plain
 fluxbb-archiver/
+├── docker-compose.yml               # Docker services (PHP 7.4, nginx, MariaDB)
+├── .env.example                     # Environment template
 ├── composer.json
+├── config.template.php              # FluxBB config template
+├── docker/
+│   ├── nginx/
+│   │   └── default.conf             # nginx config (serves /archive/)
+│   └── php/
+│       └── Dockerfile               # PHP 7.4 with mysqli, mbstring
+├── input/                           # Source data (not in git)
+│   ├── database-dump.sql
+│   └── fluxbb/
+├── output/                          # Generated files (not in git)
+│   ├── public/
+│   └── private/
 ├── bin/
 │   └── fluxbb-archiver              # CLI entry point
 ├── tpl/
@@ -274,6 +349,106 @@ fluxbb-archiver/
 │               ├── en.php
 │               └── fi.php
 └── README.md
+```
+
+## Testing
+
+The project includes a PHPUnit test suite with unit and integration tests.
+
+### Running Tests
+
+```bash
+# Install dependencies (includes PHPUnit)
+docker compose exec php composer install
+
+# Run all tests
+docker compose exec php vendor/bin/phpunit
+
+# Run only unit tests (no database required)
+docker compose exec php vendor/bin/phpunit --testsuite Unit
+
+# Run only integration tests (requires database)
+docker compose exec php vendor/bin/phpunit --testsuite Integration
+
+# Run with coverage report
+docker compose exec php vendor/bin/phpunit --coverage-html coverage/
+```
+
+### Test Structure
+
+```plain
+tests/
+├── Unit/                          # Unit tests (no external dependencies)
+│   ├── AssetCollectorTest.php     # File copying, caching, URL processing
+│   ├── BbcodeParserTest.php       # BBcode conversion, email obfuscation
+│   ├── CliOutputTest.php          # Console output formatting
+│   ├── ConfigTest.php             # CLI argument parsing, validation
+│   ├── SlugGeneratorTest.php      # Slug generation, transliteration
+│   ├── TemplateEngineTest.php     # Template rendering, partials
+│   └── TranslatorTest.php         # i18n loading, fallback
+├── Integration/                   # Integration tests (require database)
+│   ├── DatabaseTest.php           # Database connection, queries
+│   └── ExportTest.php             # Full export, output validation
+├── fixtures/                      # Test data
+│   ├── database.sql               # Database dump for testing
+│   └── expected-output/           # Expected export output for comparison
+└── TestHelper.php                 # Utilities (timestamp normalization, temp dirs)
+```
+
+### Test Coverage
+
+Current coverage: **87% lines** (152 tests, 353 assertions)
+
+| Class | Lines |
+|-------|-------|
+| Config | 100% |
+| TemplateEngine | 100% |
+| SitemapExporter | 100% |
+| BbcodeParser | 98% |
+| ForumExporter | 98% |
+| UserExporter | 98% |
+| Translator | 94% |
+| AssetCollector | 94% |
+| SlugGenerator | 93% |
+| Database | 86% |
+| Application | 84% |
+| CliOutput | 83% |
+| MessageExporter | 22% |
+
+Note: MessageExporter has low coverage because it requires PM tables (`pms_new_topics`) which are not present in the test database.
+
+### Test Fixtures
+
+The `tests/fixtures/` directory contains:
+
+- `database.sql` — A FluxBB database dump with sample data (forums, topics, posts, users)
+- `expected-output/` — Expected HTML/JSON output for regression testing
+
+To update fixtures after intentional changes:
+
+```bash
+# Re-run export
+docker compose exec php php bin/fluxbb-archiver \
+  --host=mariadb --user=fluxbb --password=fluxbb --database=fluxbb \
+  --prefix=fluxbb_ --output=/var/www/html/output --lang=en \
+  --source-dir=/var/www/html/input/
+
+# Update expected output
+cp -r output/public tests/fixtures/expected-output/
+cp -r output/private tests/fixtures/expected-output/
+
+# Update database fixture
+docker compose exec mariadb mysqldump -u fluxbb -pfluxbb fluxbb > tests/fixtures/database.sql
+```
+
+### Timestamp Normalization
+
+Export output contains dynamic timestamps (e.g., "Generated on 2026-02-12 19:01:14 UTC"). The `TestHelper::normalizeTimestamps()` method replaces these with placeholders for deterministic comparison:
+
+```php
+$normalized = TestHelper::normalizeTimestamps($htmlContent);
+// "2026-02-12T19:01:14+00:00" becomes "{{TIMESTAMP_ISO}}"
+// "2026-02-12 19:01:14 UTC" becomes "{{TIMESTAMP_EN}}"
 ```
 
 ## Development

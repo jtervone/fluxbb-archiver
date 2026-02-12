@@ -1,0 +1,30 @@
+{
+    "forum": {
+        "id": 4,
+        "name": "Public Forum 1.1",
+        "description": "Public Forum 1.1 description",
+        "num_topics": 1,
+        "num_posts": 1,
+        "last_post": 1770920549,
+        "last_poster": "fluxbb-member",
+        "position": 1,
+        "is_private": false
+    },
+    "page": 1,
+    "total_pages": 1,
+    "topics": [
+        {
+            "id": 2,
+            "subject": "Welcome — Test Post for Our New Bulletin Board",
+            "slug": "welcome-test-post-for-our-new-bulletin-board",
+            "poster": "fluxbb-member",
+            "posted": 1770920549,
+            "num_replies": 0,
+            "num_views": 1,
+            "last_post": 1770920549,
+            "last_poster": "fluxbb-member",
+            "closed": false,
+            "sticky": false
+        }
+    ]
+}

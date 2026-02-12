@@ -8,12 +8,23 @@
         "ext-mysqli": "*",
         "ext-mbstring": "*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
     "autoload": {
         "psr-4": {
             "FluxbbArchiver\\": "src/FluxbbArchiver/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "FluxbbArchiver\\Tests\\": "tests/"
+        }
+    },
     "bin": [
         "bin/fluxbb-archiver"
-    ]
+    ],
+    "scripts": {
+        "test": "phpunit"
+    }
 }

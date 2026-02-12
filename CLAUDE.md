@@ -8,19 +8,41 @@ FluxBB Archiver (`fluxbb-archiver`) is a PHP CLI tool that exports a FluxBB 1.5 
 
 ## Running the Tool
 
-The tool runs inside a Docker container (PHP 8.2 + MariaDB) from the companion `wordpress` project:
+### Standalone Docker Environment (Recommended)
+
+The project includes its own Docker environment with PHP 7.4 (FPM), nginx, and MariaDB. FluxBB is automatically cloned from GitHub on first start.
 
 ```bash
-# Run from the wordpress directory
-docker compose exec php php /var/www/html/fluxbb-archiver/bin/fluxbb-archiver \
-  --host=mariadb --user=wordpress --password=wordpress --database=wordpress \
-  --prefix=fluxbb_ --output=/var/www/html/export-test --lang=fi \
-  --source-dir=/var/www/html/splatboard/ \
-  --local-fetch-base=http://localhost:8080/splatboard/ \
-  --original-url-base=http://splatweb.net/splatboard/
+# Setup
+cp .env.example .env
+docker compose up -d
+
+# FluxBB is auto-installed in input/ directory
+# Access FluxBB installer at: http://localhost:8080/input/
+# Use DB credentials: host=mariadb, user=fluxbb, password=fluxbb, database=fluxbb
+
+# Run the archiver
+docker compose exec php php bin/fluxbb-archiver \
+  --host=mariadb --user=fluxbb --password=fluxbb --database=fluxbb \
+  --prefix=fluxbb_ --output=/var/www/html/output --lang=en \
+  --source-dir=/var/www/html/input/
+
+# View exported files in browser
+# Public:  http://localhost:8080/archive/
+# Private: http://localhost:8080/archive-private/
+# Live FluxBB: http://localhost:8080/input/
+
+# Stop environment
+docker compose down
 ```
 
-After changes, always re-copy the project to `wordpress/src/fluxbb-archiver` before running.
+### Key URLs
+
+| URL | Description |
+|-----|-------------|
+| http://localhost:8080/input/ | Live FluxBB forum (PHP 7.4) |
+| http://localhost:8080/archive/ | Exported public archive |
+| http://localhost:8080/archive-private/ | Exported private archive |
 
 ## Architecture
 
@@ -63,8 +85,99 @@ Default translations in `src/FluxbbArchiver/I18n/lang/{en,fi}.php`. Templates ca
 - User profile URLs use slugified usernames (e.g., `john-doe.html`) via `SlugGenerator`
 - Date/time formats are localizable via translation keys (`date_format`, `datetime_format`, `generated_at_format`)
 - No external dependencies beyond PHP extensions (mysqli, mbstring)
-- No test suite exists
+
+## Testing
+
+PHPUnit 9.6 test suite with **143 tests** and **86% line coverage**.
+
+### Running Tests
+
+```bash
+# Install dependencies
+docker compose exec php composer install
+
+# Run all tests
+docker compose exec php vendor/bin/phpunit
+
+# Run only unit tests (fast, no DB)
+docker compose exec php vendor/bin/phpunit --testsuite Unit
+
+# Run only integration tests (requires DB)
+docker compose exec php vendor/bin/phpunit --testsuite Integration
+
+# Generate coverage report
+docker compose exec php vendor/bin/phpunit --coverage-text
+docker compose exec php vendor/bin/phpunit --coverage-html coverage/
+```
+
+### Test Coverage
+
+| Class | Lines | Notes |
+|-------|-------|-------|
+| Config | 100% | |
+| TemplateEngine | 100% | |
+| SitemapExporter | 100% | |
+| BbcodeParser | 98% | |
+| ForumExporter | 98% | |
+| UserExporter | 98% | |
+| Translator | 94% | |
+| SlugGenerator | 93% | |
+| Database | 86% | |
+| Application | 84% | |
+| CliOutput | 83% | error() writes to STDERR |
+| AssetCollector | 78% | |
+| MessageExporter | 22% | Requires PM tables |
+
+### Test Structure
+
+| Directory | Purpose |
+|-----------|---------|
+| `tests/Unit/` | Unit tests (no DB): Config, SlugGenerator, BbcodeParser, Translator, TemplateEngine, CliOutput, AssetCollector |
+| `tests/Integration/` | Integration tests (require DB): DatabaseTest, ExportTest |
+| `tests/fixtures/` | Test data: `database.sql` dump, `expected-output/` for regression testing |
+| `tests/TestHelper.php` | Utilities for timestamp normalization, temp directories, file comparison |
+
+### Key Test Classes
+
+**Unit Tests:**
+- **ConfigTest** — CLI argument parsing, validation, defaults, path helpers
+- **SlugGeneratorTest** — Slug generation, transliteration (Finnish, German, French chars), collision handling
+- **BbcodeParserTest** — BBcode tags, HTML escaping, email obfuscation
+- **TranslatorTest** — Language loading, fallback chain, merge overrides
+- **TemplateEngineTest** — Template resolution, custom/default fallback, partials, layout wrapping
+- **CliOutputTest** — Console output formatting (info, success, heading, blank)
+- **AssetCollectorTest** — File copying, caching, URL rewriting, static asset copying
+
+**Integration Tests:**
+- **DatabaseTest** — Connection, queries, `tableExists()`
+- **ExportTest** — Full export pipeline, output structure validation, sitemap, JSON validity
+
+### Timestamp Handling in Tests
+
+Export output contains dynamic timestamps. `TestHelper::normalizeTimestamps()` replaces them with placeholders for deterministic comparison:
+
+- `2026-02-12T19:01:14+00:00` → `{{TIMESTAMP_ISO}}`
+- `2026-02-12 19:01:14 UTC` → `{{TIMESTAMP_EN}}`
+- `12.2.2026 19:01:14 UTC` → `{{TIMESTAMP_FI}}`
+
+### Updating Fixtures
+
+After intentional output changes, update expected output:
+
+```bash
+# Re-export
+docker compose exec php php bin/fluxbb-archiver \
+  --host=mariadb --user=fluxbb --password=fluxbb --database=fluxbb \
+  --prefix=fluxbb_ --output=/var/www/html/output --lang=en \
+  --source-dir=/var/www/html/input/
+
+# Update fixtures
+cp -r output/public tests/fixtures/expected-output/
+cp -r output/private tests/fixtures/expected-output/
+```
 
 ## Namespace
 
 `FluxbbArchiver\` maps to `src/FluxbbArchiver/` via PSR-4 autoloading.
+
+`FluxbbArchiver\Tests\` maps to `tests/` via PSR-4 autoload-dev.

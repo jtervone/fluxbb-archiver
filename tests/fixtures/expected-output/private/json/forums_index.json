@@ -1,0 +1,25 @@
+{
+    "board_title": "My FluxBB Forum",
+    "export_date": "2026-02-12T19:38:43+00:00",
+    "type": "private_forums",
+    "categories": [
+        {
+            "id": 4,
+            "name": "Private Category 1",
+            "position": 0,
+            "forums": [
+                {
+                    "id": 5,
+                    "name": "Private Forum 1.1",
+                    "description": "Private Forum 1.1 description",
+                    "num_topics": 0,
+                    "num_posts": 0,
+                    "last_post": 0,
+                    "last_poster": null,
+                    "position": 1,
+                    "is_private": true
+                }
+            ]
+        }
+    ]
+}

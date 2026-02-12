@@ -99,10 +99,10 @@ class BbcodeParser
         // Size
         $text = preg_replace('/\[size=([^\]:]+)(:[a-z0-9]+)?\](.*?)\[\/size(:[a-z0-9]+)?\]/is', '<span style="font-size:$1">$3</span>', $text);
 
-        // List
+        // List - process items first, then wrappers
+        $text = preg_replace('/\[\*(:[a-z0-9]+)?\](.*?)(?=\[\*(:[a-z0-9]+)?\]|\[\/list(:[a-z0-9]+)?\])/is', '<li>$2</li>', $text);
         $text = preg_replace('/\[list(:[a-z0-9]+)?\](.*?)\[\/list(:[a-z0-9]+)?\]/is', '<ul>$2</ul>', $text);
         $text = preg_replace('/\[list=1(:[a-z0-9]+)?\](.*?)\[\/list(:[a-z0-9]+)?\]/is', '<ol>$2</ol>', $text);
-        $text = preg_replace('/\[\*(:[a-z0-9]+)?\](.*?)(?=\[\*(:[a-z0-9]+)?\]|\[\/list(:[a-z0-9]+)?\])/is', '<li>$2</li>', $text);
 
         if ($this->obfuscateEmails) {
             $text = self::obfuscateEmailAddresses($text);

@@ -1,5 +1,14 @@
 # Composer dependencies
 /vendor/
+composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+.phpunit.cache/
+
+# Test fixtures - keep database.sql but ignore large output files
+# Uncomment to track expected output in git:
+# !/tests/fixtures/expected-output/
 
 # Environment files
 .env
@@ -12,3 +21,18 @@
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Input directory (source FluxBB files and database dump)
+/input/*
+!/input/README.md
+/input-*/
+
+# Output directory (generated files)
+/output/*
+!/output/README.md
+
+# Coverage reports (generated)
+/coverage/
+
+# Docker data volumes
+/docker/mariadb/

@@ -1,0 +1,24 @@
+{
+    "topic": {
+        "id": 27,
+        "subject": "Test Topic 22 - Forum navigation testing",
+        "slug": "test-topic-22-forum-navigation-testing",
+        "poster": "fluxbb-member",
+        "posted": 1770924320,
+        "forum_id": 2,
+        "forum_name": "Public Forum 1.2"
+    },
+    "page": 1,
+    "total_pages": 1,
+    "posts": [
+        {
+            "id": 78,
+            "poster": "fluxbb-member",
+            "poster_id": 3,
+            "message": "This is the first post in \"Test Topic 22 - Forum navigation testing\". Created for pagination testing.",
+            "posted": 1770924320,
+            "edited": null,
+            "edited_by": null
+        }
+    ]
+}

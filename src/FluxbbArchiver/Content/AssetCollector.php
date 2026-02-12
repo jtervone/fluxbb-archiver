@@ -16,8 +16,8 @@ class AssetCollector
     /**
      * @param string $publicDir      Absolute path to public output directory.
      * @param string $sourceDir      Absolute path to the FluxBB source root (PUN_ROOT equivalent).
-     * @param string $localFetchBase Local URL base for fetching images (e.g. http://localhost:8080/splatboard/).
-     * @param string $originalUrlBase Original URL base to rewrite (e.g. http://splatweb.net/splatboard/).
+     * @param string $localFetchBase Local URL base for fetching images (e.g. http://localhost:8080/forum/).
+     * @param string $originalUrlBase Original URL base to rewrite (e.g. http://forum.example.com/).
      */
     public function __construct(string $publicDir, string $sourceDir, string $localFetchBase = '', string $originalUrlBase = '')
     {
@@ -114,10 +114,20 @@ class AssetCollector
      */
     public function processUrls(string $text): string
     {
-        $patterns = [
-            '/(https?:\/\/splatweb\.net\/splatboard\/[^\s\'"<>\)]+\.(jpg|jpeg|png|gif|webp|svg|ico)(\?[^\s\'"<>\)]*)?)/i',
-            '/(https?:\/\/localhost:\d+\/splatboard\/[^\s\'"<>\)]+\.(jpg|jpeg|png|gif|webp|svg|ico)(\?[^\s\'"<>\)]*)?)/i',
-        ];
+        // Build patterns dynamically from configured URL bases
+        $patterns = [];
+
+        if ($this->originalUrlBase) {
+            $escapedBase = preg_quote($this->originalUrlBase, '/');
+            $patterns[] = '/(' . $escapedBase . '[^\s\'"<>\)]+\.(jpg|jpeg|png|gif|webp|svg|ico)(\?[^\s\'"<>\)]*)?)/i';
+        }
+
+        if ($this->localFetchBase) {
+            $escapedBase = preg_quote($this->localFetchBase, '/');
+            // Handle localhost with any port
+            $escapedBase = preg_replace('/localhost:\d+/', 'localhost:\\d+', $escapedBase);
+            $patterns[] = '/(' . $escapedBase . '[^\s\'"<>\)]+\.(jpg|jpeg|png|gif|webp|svg|ico)(\?[^\s\'"<>\)]*)?)/i';
+        }
 
         foreach ($patterns as $pattern) {
             $self = $this;
